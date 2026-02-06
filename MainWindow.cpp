@@ -5,7 +5,6 @@
 #include <QTextBrowser>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QTimeEdit>
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -17,7 +16,11 @@
 #include <QTimeEdit>
 #include <QInputDialog>
 #include <QTime>
+#include <QStringList>
+#include <QGridLayout>
+#include <QApplication>
 #include <vector>
+#include <algorithm>
 
 ActivityDialog::ActivityDialog(const QString &title, const QString &text, QWidget *parent)
     : QDialog(parent), textBrowser(nullptr), closeButton(nullptr) {
