@@ -25,3 +25,24 @@ ActivityDialog::ActivityDialog(const QString &title, const QString &text, QWidge
     layout->addWidget(textBrowser);
     layout->addWidget(closeButton);
 }
+
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent),
+      spinDay(nullptr), spinMonth(nullptr), spinYear(nullptr),
+      timeStartEdit(nullptr), timeEndEdit(nullptr),
+      txtTitle(nullptr), txtDescription(nullptr),
+      btnAdd(nullptr), btnRemove(nullptr), btnShowDay(nullptr), btnShowAll(nullptr),
+      tracker(nullptr) {
+
+    tracker = new ActivityTracker();
+
+    setupUI();
+    setupConnections();
+
+    setWindowTitle("Activity Tracker");
+    resize(1000, 700);
+}
+
+MainWindow::~MainWindow() {
+    delete tracker;
+}
