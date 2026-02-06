@@ -250,3 +250,40 @@ void MainWindow::removeActivity() {
         }
     }
 }
+
+void MainWindow::showDayActivities() {
+    QDate date(spinYear->value(), spinMonth->value(), spinDay->value());
+
+    if (!date.isValid()) {
+        QMessageBox::warning(this, "Errore", "Data non valida!");
+        return;
+    }
+
+    std::list<Activity> activities = tracker->getActivitiesForDate(date);
+
+    if (activities.empty()) {
+        QMessageBox::information(this, "Informazione",
+            "Nessuna attività per la data selezionata.");
+        return;
+    }
+
+    QString text = QString("Attività per il %1/%2/%3:\n\n")
+                       .arg(date.day()).arg(date.month()).arg(date.year());
+
+    int count = 1;
+    for (const Activity& act : activities) {
+        text += QString("%1. %2\n")
+                    .arg(count++)
+                    .arg(act.getActivityName());
+        text += QString("   Descrizione: %1\n").arg(act.getDescription());
+        text += QString("   Orario: %1 - %2\n\n")
+                    .arg(act.getTimeStart().toString("HH:mm"))
+                    .arg(act.getTimeEnd().toString("HH:mm"));
+    }
+
+    text += QString("Totale attività: %1").arg(activities.size());
+
+    ActivityDialog* dialog = new ActivityDialog("Attività del Giorno", text, this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->exec();
+}
