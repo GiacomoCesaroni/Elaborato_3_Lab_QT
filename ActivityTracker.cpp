@@ -27,3 +27,7 @@ std::list<Activity> ActivityTracker::getActivitiesForDate(const QDate& date) con
 std::map<QDate, std::list<Activity>> ActivityTracker::getAllActivities() const {
     return activities;
 }
+
+bool ActivityTracker::hasActivitiesForDate(const QDate& date) const {
+    return activities.find(date) != activities.end();
+}
