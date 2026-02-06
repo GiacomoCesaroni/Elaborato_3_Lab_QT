@@ -208,3 +208,45 @@ void MainWindow::addActivity() {
     txtTitle->clear();
     txtDescription->clear();
 }
+
+void MainWindow::removeActivity() {
+    QDate date(spinYear->value(), spinMonth->value(), spinDay->value());
+
+    if (!date.isValid()) {
+        QMessageBox::warning(this, "Errore", "Data non valida!");
+        return;
+    }
+
+    std::list<Activity> activities = tracker->getActivitiesForDate(date);
+
+    if (activities.empty()) {
+        QMessageBox::information(this, "Informazione",
+            "Nessuna attività per la data selezionata.");
+        return;
+    }
+
+    QStringList activityStrings;
+    for (const Activity& act : activities) {
+        activityStrings << QString("%1 (%2 - %3)")
+            .arg(act.getActivityName())
+            .arg(act.getTimeStart().toString("HH:mm"))
+            .arg(act.getTimeEnd().toString("HH:mm"));
+    }
+
+    bool ok;
+    QString selected = QInputDialog::getItem(this, "Rimuovi Attività","Seleziona l'attività da rimuovere:",activityStrings, 0, false, &ok);
+
+    if (ok && !selected.isEmpty()) {
+        int index = activityStrings.indexOf(selected);
+
+        if (index >= 0) {
+            std::vector<Activity> vec(activities.begin(), activities.end());
+            Activity toRemove = vec[index];
+
+            tracker->removeActivity(date, toRemove);
+
+            QMessageBox::information(this, "Successo",
+                "Attività rimossa con successo!");
+        }
+    }
+}
