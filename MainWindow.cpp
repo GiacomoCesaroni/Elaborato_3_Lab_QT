@@ -165,3 +165,11 @@ void MainWindow::setupConnections() {
     connect(btnShowDay, &QPushButton::clicked, this, &MainWindow::showDayActivities);
     connect(btnShowAll, &QPushButton::clicked, this, &MainWindow::showAllActivities);
 }
+
+void MainWindow::setCurrentTime() {
+    QTime current = QTime::currentTime();
+    timeStartEdit->setTime(current);
+
+    QTime plus1Hour = current.addSecs(3600);
+    timeEndEdit->setTime(plus1Hour);
+}
