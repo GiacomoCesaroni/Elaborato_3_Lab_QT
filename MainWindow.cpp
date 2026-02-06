@@ -5,7 +5,19 @@
 #include <QTextBrowser>
 #include <QPushButton>
 #include <QVBoxLayout>
-
+#include <QTimeEdit>
+#include <QWidget>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QTextEdit>
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QDate>
+#include <QTimeEdit>
+#include <QInputDialog>
+#include <QTime>
+#include <vector>
 
 ActivityDialog::ActivityDialog(const QString &title, const QString &text, QWidget *parent)
     : QDialog(parent), textBrowser(nullptr), closeButton(nullptr) {
@@ -45,4 +57,104 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow() {
     delete tracker;
+}
+
+void MainWindow::setupUI() {
+    QWidget* centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
+
+    QGridLayout* mainLayout = new QGridLayout(centralWidget);
+    mainLayout->setColumnStretch(0, 2);
+    mainLayout->setColumnStretch(1, 1);
+
+    QGroupBox* dateGroup = new QGroupBox("DATA", centralWidget);
+    QVBoxLayout* dateLayout = new QVBoxLayout(dateGroup);
+
+    QHBoxLayout* dateFields = new QHBoxLayout();
+    dateFields->addWidget(new QLabel("giorno", centralWidget));
+    spinDay = new QSpinBox(centralWidget);
+    spinDay->setRange(1, 31);
+    dateFields->addWidget(spinDay);
+
+    dateFields->addWidget(new QLabel("mese", centralWidget));
+    spinMonth = new QSpinBox(centralWidget);
+    spinMonth->setRange(1, 12);
+    dateFields->addWidget(spinMonth);
+
+    dateFields->addWidget(new QLabel("anno", centralWidget));
+    spinYear = new QSpinBox(centralWidget);
+    spinYear->setRange(2000, 2100);
+    dateFields->addWidget(spinYear);
+
+    dateLayout->addLayout(dateFields);
+    mainLayout->addWidget(dateGroup, 0, 0);
+
+    QGroupBox* titleGroup = new QGroupBox("Titolo", centralWidget);
+    QVBoxLayout* titleLayout = new QVBoxLayout(titleGroup);
+    txtTitle = new QLineEdit(centralWidget);
+    txtTitle->setPlaceholderText("Inserisci il titolo dell'attività...");
+    titleLayout->addWidget(txtTitle);
+    mainLayout->addWidget(titleGroup, 1, 0);
+
+    QGroupBox* descGroup = new QGroupBox("Descrizione", centralWidget);
+    QVBoxLayout* descLayout = new QVBoxLayout(descGroup);
+    txtDescription = new QTextEdit(centralWidget);
+    txtDescription->setPlaceholderText("Descrivi l'attività in dettaglio...");
+    txtDescription->setMaximumHeight(150);
+    descLayout->addWidget(txtDescription);
+    mainLayout->addWidget(descGroup, 2, 0);
+
+    QGroupBox* timeGroup = new QGroupBox("Orario", centralWidget);
+    QHBoxLayout* timeLayout = new QHBoxLayout(timeGroup);
+
+    timeLayout->addWidget(new QLabel("Inizio:", centralWidget));
+    timeStartEdit = new QTimeEdit(centralWidget);
+    timeStartEdit->setDisplayFormat("HH:mm");
+    timeLayout->addWidget(timeStartEdit);
+
+    timeLayout->addWidget(new QLabel("Fine:", centralWidget));
+    timeEndEdit = new QTimeEdit(centralWidget);
+    timeEndEdit->setDisplayFormat("HH:mm");
+    timeLayout->addWidget(timeEndEdit);
+
+    mainLayout->addWidget(timeGroup, 3, 0);
+
+    QVBoxLayout* buttonLayout = new QVBoxLayout();
+    buttonLayout->setAlignment(Qt::AlignTop);
+
+    QString buttonStyle =
+        "QPushButton {"
+        "   padding: 12px;"
+        "   font-weight: bold;"
+        "   font-size: 14px;"
+        "   border-radius: 5px;"
+        "   margin: 5px;"
+        "}"
+        "QPushButton:hover {"
+        "   background-color: #4d4d4d;"
+        "}";
+
+    btnAdd = new QPushButton("Aggiungi Attività", centralWidget);
+    btnAdd->setStyleSheet(buttonStyle +
+        "QPushButton { background-color: #aecfcf; color: black; }");
+
+    btnRemove = new QPushButton("Rimuovi Attività", centralWidget);
+    btnRemove->setStyleSheet(buttonStyle + "QPushButton { background-color: #cfaeae; color: black; }");
+
+    btnShowDay = new QPushButton("Mostra attività del giorno", centralWidget);
+    btnShowDay->setStyleSheet(buttonStyle + "QPushButton { background-color: #cdcfae; color: black; }");
+
+    btnShowAll = new QPushButton("Mostra tutte le attività", centralWidget);
+    btnShowAll->setStyleSheet(buttonStyle + "QPushButton { background-color: #aecfb8; color: black; }");
+
+    buttonLayout->addWidget(btnAdd);
+    buttonLayout->addWidget(btnRemove);
+    buttonLayout->addWidget(btnShowDay);
+    buttonLayout->addWidget(btnShowAll);
+    buttonLayout->addStretch();
+
+    mainLayout->addLayout(buttonLayout, 0, 1, 4, 1); // Span 4 righe
+
+    setCurrentDate();
+    setCurrentTime();
 }
