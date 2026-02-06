@@ -173,3 +173,38 @@ void MainWindow::setCurrentTime() {
     QTime plus1Hour = current.addSecs(3600);
     timeEndEdit->setTime(plus1Hour);
 }
+
+void MainWindow::addActivity() {
+    QString title = txtTitle->text();
+    QString description = txtDescription->toPlainText();
+    QDate date(spinYear->value(), spinMonth->value(), spinDay->value());
+    QTime timeStart = timeStartEdit->time();
+    QTime timeEnd = timeEndEdit->time();
+
+    if(title.isEmpty() || description.isEmpty()) {
+        QMessageBox::warning(this, "Attenzione",
+            "Mancata compilazione di tutti i campi!");
+        return;
+    }
+
+    if (!date.isValid()) {
+        QMessageBox::warning(this, "Errore", "Data non valida!");
+        return;
+    }
+
+    if (timeStart >= timeEnd) {
+        QMessageBox::warning(this, "Errore",
+            "L'orario di inizio deve essere antecedente all'orario di fine!");
+        return;
+    }
+
+    Activity activity(title, description, timeStart, timeEnd);
+
+    tracker->addActivity(date, activity);
+
+    QMessageBox::information(this, "Successo",
+        "Attività aggiunta con successo!");
+
+    txtTitle->clear();
+    txtDescription->clear();
+}
