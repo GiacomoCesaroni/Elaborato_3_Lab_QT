@@ -169,6 +169,13 @@ void MainWindow::setupConnections() {
     connect(btnShowAll, &QPushButton::clicked, this, &MainWindow::showAllActivities);
 }
 
+void MainWindow::setCurrentDate() {
+    QDate current = QDate::currentDate();
+    spinDay->setValue(current.day());
+    spinMonth->setValue(current.month());
+    spinYear->setValue(current.year());
+}
+
 void MainWindow::setCurrentTime() {
     QTime current = QTime::currentTime();
     timeStartEdit->setTime(current);
