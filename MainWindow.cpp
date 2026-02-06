@@ -158,3 +158,10 @@ void MainWindow::setupUI() {
     setCurrentDate();
     setCurrentTime();
 }
+
+void MainWindow::setupConnections() {
+    connect(btnAdd, &QPushButton::clicked, this, &MainWindow::addActivity);
+    connect(btnRemove, &QPushButton::clicked, this, &MainWindow::removeActivity);
+    connect(btnShowDay, &QPushButton::clicked, this, &MainWindow::showDayActivities);
+    connect(btnShowAll, &QPushButton::clicked, this, &MainWindow::showAllActivities);
+}
