@@ -28,8 +28,41 @@ public:
     ActivityDialog(const QString &title, const QString &text, QWidget *parent = nullptr);
 };
 
-class MainWindow {
+class MainWindow : public QMainWindow {
+    Q_OBJECT
 
+public:
+    explicit MainWindow(QWidget* parent = nullptr);
+    ~MainWindow();
+
+private slots:
+    void addActivity();
+    void removeActivity();
+    void showDayActivities();
+    void showAllActivities();
+
+private:
+    void setupUI();
+    void setupConnections();
+    void setCurrentDate();
+    void setCurrentTime();
+
+    QSpinBox* spinDay;
+    QSpinBox* spinMonth;
+    QSpinBox* spinYear;
+
+    QTimeEdit* timeStartEdit;
+    QTimeEdit* timeEndEdit;
+
+    QLineEdit* txtTitle;
+    QTextEdit* txtDescription;
+
+    QPushButton* btnAdd;
+    QPushButton* btnRemove;
+    QPushButton* btnShowDay;
+    QPushButton* btnShowAll;
+
+    ActivityTracker* tracker;
 };
 
 
