@@ -23,3 +23,10 @@ QString Activity::getActivityName() const {
 QString Activity::getDescription() const {
     return this->description;
 }
+
+bool Activity::operator==(const Activity &other) const {
+    return this->activityName == other.activityName
+        && this->description == other.description
+        && this->timeStart == other.timeStart
+        && this->timeEnd == other.timeEnd;
+}
