@@ -23,3 +23,7 @@ std::list<Activity> ActivityTracker::getActivitiesForDate(const QDate& date) con
     }
     return std::list<Activity>();
 }
+
+std::map<QDate, std::list<Activity>> ActivityTracker::getAllActivities() const {
+    return activities;
+}
