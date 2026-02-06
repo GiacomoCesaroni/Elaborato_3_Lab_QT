@@ -15,3 +15,11 @@ void ActivityTracker::removeActivity(QDate date, const Activity &activity) {
         }
     }
 }
+
+std::list<Activity> ActivityTracker::getActivitiesForDate(const QDate& date) const {
+    auto it = activities.find(date);
+    if (it != activities.end()) {
+        return it->second;
+    }
+    return std::list<Activity>();
+}
