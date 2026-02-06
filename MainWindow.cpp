@@ -287,3 +287,45 @@ void MainWindow::showDayActivities() {
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->exec();
 }
+void MainWindow::showAllActivities(){
+    auto allActivities = tracker->getAllActivities();
+
+    if (allActivities.empty()) {
+        QMessageBox::information(this, "Informazione",
+            "Nessuna attività registrata.");
+        return;
+    }
+
+    QString text = "TUTTE LE ATTIVITÀ\n";
+    text += "=================\n\n";
+
+    int totalActivities = 0;
+
+    for (const auto& pair : allActivities) {
+        const QDate& date = pair.first;
+        const std::list<Activity>& activities = pair.second;
+
+        text += QString(" %1/%2/%3\n")
+                    .arg(date.day()).arg(date.month()).arg(date.year());
+        text += "-----------------\n";
+
+        int dayCount = 1;
+        for (const Activity& act : activities) {
+            text += QString("   %1. %2 (%3 - %4)\n")
+                        .arg(dayCount++)
+                        .arg(act.getActivityName())
+                        .arg(act.getTimeStart().toString("HH:mm"))
+                        .arg(act.getTimeEnd().toString("HH:mm"));
+        }
+
+        text += "\n";
+        totalActivities += activities.size();
+    }
+
+    text += QString("\nTotale attività registrate: %1").arg(totalActivities);
+
+    ActivityDialog* dialog = new ActivityDialog("Tutte le Attività", text, this);
+    dialog->resize(600, 500);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->exec();
+}
