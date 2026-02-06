@@ -19,6 +19,8 @@ add_executable(Elaborato_3_Lab_QT main.cpp
         Activity.h
         ActivityTracker.cpp
         ActivityTracker.h
+        MainWindow.cpp
+        MainWindow.h
 )
 target_link_libraries(Elaborato_3_Lab_QT
         Qt::Core
