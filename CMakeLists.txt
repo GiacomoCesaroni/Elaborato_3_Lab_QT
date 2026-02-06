@@ -17,6 +17,8 @@ find_package(Qt6 COMPONENTS
 add_executable(Elaborato_3_Lab_QT main.cpp
         Activity.cpp
         Activity.h
+        ActivityTracker.cpp
+        ActivityTracker.h
 )
 target_link_libraries(Elaborato_3_Lab_QT
         Qt::Core
