@@ -18,6 +18,15 @@ class QTimeEdit;
 
 class ActivityTracker;
 
+class ActivityDialog : public QDialog {
+    Q_OBJECT
+private:
+    QTextBrowser* textBrowser;
+    QPushButton* closeButton;
+
+public:
+    ActivityDialog(const QString &title, const QString &text, QWidget *parent = nullptr);
+};
 
 class MainWindow {
 
