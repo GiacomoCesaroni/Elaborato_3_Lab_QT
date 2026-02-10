@@ -6,7 +6,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-list(APPEND CMAKE_PREFIX_PATH "C:/Qt/6.10.2/mingw_64")
+list(APPEND CMAKE_PREFIX_PATH "C:/Qt/6.10.2/mingw_64")#per Windows
+#set(Qt6_DIR) #per Linux o MacOS
 
 find_package(Qt6 REQUIRED COMPONENTS
         Core
@@ -44,7 +45,7 @@ if(BUILD_TESTS)
     add_subdirectory(Test)
 endif()
 
-if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE) #per Windows
     set(DEBUG_SUFFIX "")
 
     list(GET CMAKE_PREFIX_PATH 0 QT_BASE_DIR)

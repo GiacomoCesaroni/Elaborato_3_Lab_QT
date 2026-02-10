@@ -50,3 +50,34 @@ gtest_discover_tests(activitytracker_tests
 )
 
 message(STATUS "Configured Tests: executable ${CMAKE_CURRENT_BINARY_DIR}/bin/activitytracker_tests")
+
+if(WIN32)
+    if(DEFINED CMAKE_PREFIX_PATH)
+        list(GET CMAKE_PREFIX_PATH 0 QT_BASE_DIR)
+        file(TO_CMAKE_PATH "${QT_BASE_DIR}" QT_BASE_DIR)
+
+        message(STATUS "Copio DLL Qt per test da: ${QT_BASE_DIR}")
+
+        foreach(QT_LIB Core Gui Widgets)
+            add_custom_command(TARGET activitytracker_tests POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${QT_BASE_DIR}/bin/Qt6${QT_LIB}.dll"
+                    "$<TARGET_FILE_DIR:activitytracker_tests>"
+                    COMMENT "Copiando Qt6${QT_LIB}.dll per i test..."
+            )
+        endforeach()
+
+        if(EXISTS "${QT_BASE_DIR}/plugins/platforms/qwindows.dll")
+            add_custom_command(TARGET activitytracker_tests POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E make_directory
+                    "$<TARGET_FILE_DIR:activitytracker_tests>/plugins/platforms/"
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${QT_BASE_DIR}/plugins/platforms/qwindows.dll"
+                    "$<TARGET_FILE_DIR:activitytracker_tests>/plugins/platforms/"
+                    COMMENT "Copiando Qt platform plugin per i test..."
+            )
+        endif()
+    else()
+        message(WARNING "CMAKE_PREFIX_PATH non definita - impossibile copiare DLL Qt per i test")
+    endif()
+endif()
