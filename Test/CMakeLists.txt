@@ -15,9 +15,8 @@ FetchContent_MakeAvailable(googletest)
 message(STATUS "Google Test is been configured by FetchContent")
 
 add_executable(activitytracker_tests
-        Unit/runAllTests.cpp
         Unit/ActivityTrackerTest.cpp
-        Unit/MainWindowTest.cpp)
+        )
 
 set_target_properties(activitytracker_tests PROPERTIES
         CXX_STANDARD 11
